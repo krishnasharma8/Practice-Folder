@@ -18,6 +18,7 @@ const express = require("express");
 const connectDb = require("./config/dbConnection"); // Ensure this path is correct
 const errorHandler = require("./middleware/errorHandler"); // Ensure this path is correct
 const cors = require("cors");
+const hbs=require("hbs")
 // Connect to the database
 
 // Create an Express application
@@ -38,12 +39,16 @@ const cors = require("cors");
 //     console.log(`Server is running on port ${port}`);
 // });
 
-// env file config
+// env file configz
 const dotenv=require("dotenv");
 dotenv.config();
 connectDb();
 const app = express();
 app.set('view engine','hbs');
+
+hbs.registerPartials(__dirname + '/views/partials'); // Path to your partials
+
+
 app.get("/home",(req,res)=>{
 
     res.render("home",{
