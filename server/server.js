@@ -23,8 +23,7 @@ const hbs=require("hbs")
 
 // Create an Express application
 // Middleware
-// app.use(express.json());
-// app.use(cors());
+
 
 // Basic route
 // app.get("/", (req, res) => {
@@ -47,8 +46,11 @@ const app = express();
 app.set('view engine','hbs');
 
 hbs.registerPartials(__dirname + '/views/partials'); // Path to your partials
+app.use(express.json());
+app.use(cors());
 
-
+app.use("/api/register",require("./routes/userRoutes"));
+app.use("/api/doctor", require("./routes/doctorRoutes"))
 app.get("/home",(req,res)=>{
 
     res.render("home",{
