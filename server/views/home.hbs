@@ -14,6 +14,15 @@
   <input type="file" name="avatar" />
   <input type="submit" value="Upload">
 </form>
+{{!-- <h1>Welcome, {{username}}</h1> --}}
+
+<h1>Welcome, {{username}}</h1>
+
+    {{#if avatar}}
+        <img src="/{{avatar}}" alt="Profile Avatar" width="150" height="150">
+    {{else}}
+        <p>No profile picture available.</p>
+    {{/if}}
     </div>
 </body>
 </html>

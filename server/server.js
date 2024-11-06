@@ -53,6 +53,7 @@ app.use(cors());
 
 app.use("/api/register",require("./routes/userRoutes"));
 app.use("/api/doctor", require("./routes/doctorRoutes"))
+app.use("/uploads", express.static("uploads"));
 
 // app.post('/profile', upload.single('avatar'), function (req, res, next) {
 //     // req.file is the `avatar` file
@@ -74,7 +75,10 @@ app.use("/api/doctor", require("./routes/doctorRoutes"))
   
 //   const uploads = multer({ storage: storage })
 
-const Upload = require("./model/UploadModel")
+const Upload = require("./model/UploadModel");
+const Blog = require("./model/Blog");
+
+
 
 app.post("/profile", upload.single('avatar'), async (req, res, next) => {
     try {
@@ -94,12 +98,41 @@ app.post("/profile", upload.single('avatar'), async (req, res, next) => {
     }
 });
 
+
+
+app.get("/home", async (req, res) => {
+    try {
+        // Fetch the latest profile from the database
+        const profile = await Upload.findOne().sort({ _id: -1 }); // This retrieves the latest profile
+
+        // Render the home page with the profile data
+        res.render("home", {
+            username: profile ? profile.username : "No Profile Found",
+            avatar: profile ? profile.avatar : null
+        });
+    } catch (error) {
+        console.error("Error fetching profile:", error);
+        res.status(500).send("Error fetching profile data.");
+    }
+});
+
 app.get("/home",(req,res)=>{
 
     res.render("home",{
         username:"Krishna",
     })
 })
+
+// app.post('/blogs',upload.single('blogimage')),
+//     await newBlog.save()
+//     return res.redirect("\home");
+// })
+// app.get("/blogs",async(req,res)=>{
+//     let allBlogs=await Blog.find();
+//     res.render("Blog",{
+//         blogs:allBlogs
+//     })
+// })
 
 const port = process.env.PORT || 5000;
 // jha package.json hoti hai whi installation hoti hai
@@ -125,3 +158,4 @@ app.get("/users",(req,res)=>{
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
   });
+
