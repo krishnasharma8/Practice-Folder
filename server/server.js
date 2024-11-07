@@ -98,8 +98,6 @@ app.post("/profile", upload.single('avatar'), async (req, res, next) => {
     }
 });
 
-
-
 app.get("/home", async (req, res) => {
     try {
         // Fetch the latest profile from the database
@@ -157,5 +155,5 @@ app.get("/users",(req,res)=>{
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
-  });
+});
 
