@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 const User = require("../model/userModel");
 require("dotenv").config();
+const jwt = require("jsonwebtoken");
 
 // Register User Function
 const registerUser = asyncHandler(async (req, res) => {
@@ -40,24 +41,13 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
-    if (!email || !password) {
-        res.status(400);
-        throw new Error("Please fill the fields");
-    }
+    const foundUser = await User.findOne({ email });
 
-    const user = await User.findOne({ email });
-    if (!user) {
-        res.status(401);
-        throw new Error("Invalid email or password");
+    if (foundUser && (await bcrypt.compare(password, foundUser.password))) {
+        const token = jwt.sign({ id: foundUser.id }, 'yourSecretKey', { expiresIn: '1h' });
+        res.json({ token });
+    } else {
+        res.status(401).json({ message: "Invalid email or password" });
     }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-        res.status(401);
-        throw new Error("Invalid email or password");
-    }
-
-    res.status(201).json({ message: "User logged in successfully", user });
 });
-
-module.exports = { registerUser, loginUser };
+module.exports = { registerUser, loginUser};
