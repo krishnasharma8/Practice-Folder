@@ -27,14 +27,13 @@ const validateToken=(req,res,next)=>{
     try {
 
         //we are handling if token is validated or verified then move to next middleware or respond back to client
-        const validateToken=jwt.verify(token,process.env.PRIVATE_KEY);
+        const validToken=jwt.verify(token,process.env.PRIVATE_KEY);
         
-        req.user=validateToken
+        req.user=validToken
         next()
     } catch (error) {
         console.error()
+        return res.status(401).json({err: "Invalid Token"})
     }
-
-
 }
 module.exports = { generateToken, validateToken };

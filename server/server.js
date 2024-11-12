@@ -142,7 +142,7 @@ app.get("/users",(req,res)=>{
 
         people:[
             {
-                username:"Krihsna",
+                username:"Krishna",
                 age:20
             },
             {
