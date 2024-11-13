@@ -56,6 +56,8 @@ app.use("/api/doctor", require("./routes/doctorRoutes"))
 app.use("/uploads", express.static("uploads"));
 const jwt=require("jsonwebtoken")
 const fileSchemaModel=require("./model/filestoremodel")
+// Route for NewsLetter - Newsletter is knd of blog
+app.use("/api/newsletter",require("./routes/newsletterRoutes"))
 // app.post('/profile', upload.single('avatar'), function (req, res, next) {
 //     // req.file is the `avatar` file
 //     // req.body will hold the text fields, if there were any
