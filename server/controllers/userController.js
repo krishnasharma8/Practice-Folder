@@ -85,4 +85,23 @@ const getUserProfile = asyncHandler(async (req, res) => {
         res.status(401).json({ message: "Invalid or expired token" });
     }
 });
-module.exports = { registerUser, loginUser, getUserProfile };
+// Put api to update user
+const updateUserProfile = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user.id);
+
+    if (user) {
+        user.firstname = req.body.firstname || user.firstname;
+        user.lastname = req.body.lastname || user.lastname;
+        user.age = req.body.age || user.age;
+        user.bloodgroup = req.body.bloodgroup || user.bloodgroup;
+        user.gender = req.body.gender || user.gender;
+        user.phoneNumber = req.body.phoneNumber || user.phoneNumber;
+
+        const updatedUser = await user.save();
+        res.json({ message: "Profile updated", user: updatedUser });
+    } else {
+        res.status(404).json({ message: "User not found" });
+    }
+});
+
+module.exports = { registerUser, loginUser, getUserProfile, updateUserProfile };
